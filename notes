@@ -45,8 +45,14 @@ function usage()
 function continue()
 {
   echo "*** You want to: ($*)?"
-  echo -n "Continue? [Y] (^C to abort)" ; read
-  $*
+  echo -n "Continue? [Y/n] " ; read answ
+  if [ "$answ" == "" ] || [ "$answ" == "y" ] || [ "$answ" == "Y" ]; then
+    $*
+  elif [ "$answ" == "n" ] || [ "$answ" == "N" ] ; then
+    exit 0
+  else
+    continue "$*"
+  fi
 }
 
 if [ -z "$1" ] ; then
