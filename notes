@@ -61,6 +61,7 @@ fi
 
 if [ "$1" == "push" ] ; then
   cd $zimNotes
+  git remote -v show
   continue "git status"
   continue "git add ."
   git log --oneline -5
@@ -72,6 +73,7 @@ if [ "$1" == "push" ] ; then
   echo "Don't forget to take back your usb-pendrive!"
 elif [ "$1" == "pull" ] ; then
   cd $zimNotes
+  git remote -v show
   continue "git status"
   continue "git pull origin master"
   continue "git status"
