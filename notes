@@ -1,0 +1,77 @@
+#!/bin/bash
+# Copyright (c) 2011, Reynaldo Cordero Corro
+# All rights reserved
+# 
+# Redistribution and use in source and binary forms, with or without modification,
+# are permitted provided that the following conditions are met:
+# 
+#  * Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+#  * Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+# INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+# LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+# OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+# OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# usage: notes [pull, push]
+
+## notes is an application to synchronize Zim notes ($zimNotes) between workstations
+## using a pendrive ($pendrive). 
+## You have to mount the $pendrive before using it.
+## 
+
+zimNotes="$HOME/notes-zim-ok"
+pendrive="/media/VERBATIM32"
+
+# 
+function usage()
+{
+  echo
+  echo "Usage: $0 [pull, push]";
+  echo "ie: $0 pull"
+  echo "ie: $0 push"; echo
+  exit 1
+}
+
+function continue()
+{
+  echo "*** You want to: ($*)?"
+  echo -n "Continue? [Y] (^C to abort)" ; read
+  $*
+}
+
+if [ -z "$1" ] ; then
+  usage
+fi
+
+if [ "$1" == "push" ] ; then
+  cd $zimNotes
+  continue "git status"
+  continue "git add ."
+  git log --oneline -5
+  continue "git commit -a"
+  continue "git push origin master"
+  continue "git status"
+  sync
+  continue "umount $pendrive"
+  echo "Don't forget to take back your usb-pendrive!"
+elif [ "$1" == "pull" ] ; then
+  cd $zimNotes
+  continue "git status"
+  continue "git pull origin master"
+  continue "git status"
+  sync
+  continue "umount $pendrive"
+  echo "Don't forget to take back your usb-pendrive!"
+else
+  usage
+fi
