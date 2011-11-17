@@ -30,7 +30,7 @@
 ## You have to mount the $pendrive before using it.
 ## 
 
-zimNotes="$HOME/MSWL"
+mswlDocu="$HOME/MSWL"
 pendrive="/media/VERBATIM32"
 
 # 
