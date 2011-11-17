@@ -1,5 +1,5 @@
 #!/bin/bash
-# notes v 0.2
+# mswl v 0.2
 # Copyright (c) 2011, Reynaldo Cordero Corro
 # All rights reserved
 # 
@@ -23,14 +23,14 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 # OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# usage: notes [pull, push]
+# usage: mswl [pull, push]
 
-## notes is an application to synchronize Zim notes ($zimNotes) between workstations
+## mswl is an application to synchronize mswl documentation ($mswlDocu) between workstations
 ## using a pendrive ($pendrive). 
 ## You have to mount the $pendrive before using it.
 ## 
 
-zimNotes="$HOME/notes-zim-ok"
+zimNotes="$HOME/MSWL"
 pendrive="/media/VERBATIM32"
 
 # 
@@ -61,7 +61,7 @@ if [ -z "$1" ] ; then
 fi
 
 if [ "$1" == "push" ] ; then
-  cd $zimNotes
+  cd $mswlDocu
   git remote -v show
   continue "git status"
   continue "git add ."
@@ -73,7 +73,7 @@ if [ "$1" == "push" ] ; then
   continue "umount $pendrive"
   echo "Don't forget to take back your usb-pendrive!"
 elif [ "$1" == "pull" ] ; then
-  cd $zimNotes
+  cd $mswlDocu
   git remote -v show
   continue "git status"
   continue "git pull origin master"
