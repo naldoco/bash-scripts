@@ -15,6 +15,7 @@
 #
 
 appName="* * * USB backup management application * * *"
+GIT_REPO="/media/VERBATIM32/REPO/notes-zim-ok.git/"
 
 DISK=${1-"VERBATIM32"}
 if [ $DISK == "k" ] ; then
@@ -55,6 +56,7 @@ else
   fi
   mkdir "$1"
   echo  "Se ha creado el directorio $1."
+  return 1
 fi
 }
 
@@ -155,6 +157,11 @@ isUsbPlugged $DISK
 
 DIR_ZIM="/home/naldoco/notes-zim-ok"
 checkDirectory "$DIR_ZIM"
+if [ $? -eq "1" ] ; then
+  echo "Directorio de datos vacío. Se procede a realizar el clonado de datos desde git."
+  cd "$DIR_ZIM/.."
+  git clone $GIT_REPO
+fi
 DIR_ZIM_BAK="/home/naldoco/notes-zim-ok.bak"
 checkDirectory "$DIR_ZIM_BAK"
 DIR_ZIM_BAK2="/home/naldoco/notes-zim-ok.bak2"
